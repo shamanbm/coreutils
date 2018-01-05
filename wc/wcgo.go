@@ -46,6 +46,9 @@ for especificado, imprime o sub-total e caso seja omitido lê os dados da entrad
 				fmt.Fprintf(os.Stderr, "erro: %s\n", err.Error())
 				os.Exit(1)
 			}
+
+			defer file.Close()
+
 			l, w, b = count(file, flagLine, flagWord, flagByte)
 			tl += l
 			tw += w
