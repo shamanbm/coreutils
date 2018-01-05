@@ -16,6 +16,7 @@ func main() {
 		filename                     string
 		file                         *os.File
 		err                          error
+		tl, tw, tb, l, w, b          int
 	)
 
 	flag.BoolVar(&flagLine, "line", false, "imprime o total de linhas")
@@ -33,7 +34,7 @@ for especificado, imprime o sub-total e caso seja omitido lê os dados da entrad
 
 	flag.Parse()
 
-	if !(flagLine && flagWord && flagByte) {
+	if !flagLine && !flagWord && !flagByte {
 		flagLine, flagWord, flagByte = true, true, true
 	}
 
@@ -45,9 +46,17 @@ for especificado, imprime o sub-total e caso seja omitido lê os dados da entrad
 				fmt.Fprintf(os.Stderr, "erro: %s\n", err.Error())
 				os.Exit(1)
 			}
-			fmt.Println(count(file, flagLine, flagWord, flagByte))
+			l, w, b = count(file, flagLine, flagWord, flagByte)
+			tl += l
+			tw += w
+			tb += b
+			fmt.Printf("%-6v %-6v %-6v %v\n", l, w, b, filename)
+		}
+		if flag.NArg() > 1 {
+			fmt.Printf("%-6v %-6v %-6v total\n", tl, tw, tb)
 		}
 	}
+	return
 }
 
 func count(r io.Reader, line, word, byte bool) (int, int, int) {
