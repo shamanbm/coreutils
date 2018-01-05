@@ -27,7 +27,8 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Uso: %s [OPÇÕES] [ARQUIVO] ...\n", os.Args[0])
 		fmt.Fprintln(os.Stderr, `
 Imprime o total de linhas, palavras e bytes de um arquivo. Se mais de um arquivo
-for especificado, imprime o sub-total e caso seja omitido lê os dados da entrada padrão
+for especificado, imprime o sub-total de cada arquivo. Caso seja omitido lê os dados 
+da entrada padrão.
 `)
 		flag.PrintDefaults()
 	}
@@ -39,7 +40,8 @@ for especificado, imprime o sub-total e caso seja omitido lê os dados da entrad
 	}
 
 	if flag.NArg() == 0 {
-		fmt.Println(count(os.Stdin, flagLine, flagWord, flagByte))
+		l, w, b = count(os.Stdin, flagLine, flagWord, flagByte)
+		fmt.Printf("%-6v %-6v %-6v\n", l, w, b)
 	} else {
 		for _, filename = range flag.Args() {
 			if file, err = os.Open(filename); err != nil {
